@@ -1,48 +1,46 @@
 package com.samclercky.dvp;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 /**
  *
  * @author Clercky
  */
-public class DVP {
+public class DVP extends VBox{
     // private
-    private Pane root; // root of triangle
     private final int celWidth = 30; // width of each cel
     private final int celHeight = 30; // height of each cel
-    private int max = 5; // the amount of rows and columns
+    private int max = 20; // the amount of rows and columns
     
     // constructors
     /**
      * Helper class to easily create a triangle of Pascal
-     * @param root sets the container for the triangle (can also be set via setRoot()
-     */
-    public DVP(Pane root) {
-        setRoot(root);
-    }
-    /**
-     * Helper class to easily create a triangle of Pascal
      */
     public DVP() {
-        setRoot(new Pane());
     }
     
     // public members
     /**
      * Creates the triangle and puts it into the root
      */
-    public void addDataToRoot() {
-        // TODO create triangle and add it to root
+    public void render() {       
+        for (int i = 0; i <= max; i++) {
+            getChildren().add(createRow(i));
+        }
+        
+        setPrefSize(calcMaxWidth(), getHeight());
     }
     
     // private members
     private HBox createRow(int row) {
         HBox result = new HBox();
         result.setAlignment(Pos.CENTER);
+        
+        result.prefWidthProperty().bind(widthProperty());
         
         for (int i = 0; i <= row; i++) {
             result.getChildren().add(createCel(row, i));
@@ -55,15 +53,20 @@ public class DVP {
         Label result = new Label();
         result.setText(Integer.toString(createData(row, column)));
         result.setPrefSize(celWidth, celHeight);
+        StringBuilder styles = new StringBuilder();
+        styles.append("-fx-border-color: black;");
+        styles.append("-fx-border-width: 1px;");
+        
+        result.setStyle(styles.toString());
+        result.setAlignment(Pos.CENTER);
+        
         return result;
     }
     private int createData(int row, int column) {
         // TODO create data
-        return 0;
+        return row+column;
     }
-    
-    // accessors
-    public void setRoot(Pane root) {
-        this.root = root;
+    private double calcMaxWidth() {
+        return celWidth * (max+1);
     }
 }

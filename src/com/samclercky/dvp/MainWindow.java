@@ -5,8 +5,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -37,6 +39,11 @@ public class MainWindow extends Application{
         root.setTop(titleContainer);
         
         // create triangle and add it to root
+        DVP triangle = new DVP();
+        triangle.render();
+        ScrollPane triangleContainer = new ScrollPane();
+        triangleContainer.setContent(triangle);
+        root.setCenter(triangleContainer);
         
         // set window and show
         primaryStage.setTitle("De driehoek van Pascal");
