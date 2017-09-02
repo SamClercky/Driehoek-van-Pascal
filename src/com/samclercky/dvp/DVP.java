@@ -18,7 +18,7 @@ public class DVP extends VBox{
     private int celWidth = 50; // width of each cel
     private final int celHeight = 30; // height of each cel
     private int max = 40; // the amount of rows and columns
-    private final int fontSize = 50/7;
+    private final int fontSize = 10;
     
     // constructors
     /**
@@ -43,7 +43,7 @@ public class DVP extends VBox{
             getChildren().add(createRow(i));
         }
         
-        setPrefSize(calcMaxWidth(), getHeight());
+        setPrefSize(calcMaxWidth(), calcMaxHeight());
     }
     
     // private members
@@ -91,6 +91,9 @@ public class DVP extends VBox{
     }
     private double calcMaxWidth() {
         return celWidth * (max+1);
+    }
+    private double calcMaxHeight() {
+        return celHeight * (max+1);
     }
     private void clear() {
         if (getChildren().size() <= 0) {

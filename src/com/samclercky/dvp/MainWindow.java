@@ -40,10 +40,14 @@ public class MainWindow extends Application{
         
         // create triangle and add it to root
         DVP triangle = new DVP();
-        triangle.render();
         ScrollPane triangleContainer = new ScrollPane();
+        triangleContainer.setPadding(new Insets(10));
         triangleContainer.setContent(triangle);
         root.setCenter(triangleContainer);
+        
+        // set GenerateSection
+        GenerateSection generateSection = new GenerateSection(triangle);
+        root.setBottom(generateSection);
         
         // set window and show
         primaryStage.setTitle("De driehoek van Pascal");
