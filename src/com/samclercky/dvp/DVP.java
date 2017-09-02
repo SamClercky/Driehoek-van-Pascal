@@ -1,7 +1,10 @@
 package com.samclercky.dvp;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -29,6 +32,9 @@ public class DVP extends VBox{
      * Creates the triangle and puts it into the root
      */
     public void render() {
+        // reset all
+        clear();
+        
         // search the largest cel, multiply by fontsize and use it as celwidth
         celWidth = createData(max, (int)max/2).toString().length() * fontSize;
         System.out.println("celWidth: " + celWidth);
@@ -85,5 +91,28 @@ public class DVP extends VBox{
     }
     private double calcMaxWidth() {
         return celWidth * (max+1);
+    }
+    private void clear() {
+        if (getChildren().size() <= 0) {
+            return;
+        }
+        getChildren().remove(0, getChildren().size());
+    }
+    
+    // accessors
+    public int getMax() { return max; }
+    public void setMax(int value) { max = value; }
+    public Label[] getLabels() {
+        ArrayList<Label> result = new ArrayList<>();
+        
+        for (Node child : getChildren()) {
+            HBox rij = (HBox)child;
+            
+            for (Node lbl : rij.getChildren()) {
+                result.add((Label)lbl);
+            }
+        }
+        
+        return result.toArray(new Label[result.size()]);
     }
 }
