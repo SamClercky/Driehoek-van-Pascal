@@ -1,7 +1,7 @@
 package com.samclercky.dvp;
 
+import java.math.BigInteger;
 import javafx.geometry.Pos;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -12,9 +12,10 @@ import javafx.scene.layout.VBox;
  */
 public class DVP extends VBox{
     // private
-    private final int celWidth = 30; // width of each cel
+    private int celWidth = 50; // width of each cel
     private final int celHeight = 30; // height of each cel
     private int max = 40; // the amount of rows and columns
+    private final int fontSize = 50/7;
     
     // constructors
     /**
@@ -27,7 +28,11 @@ public class DVP extends VBox{
     /**
      * Creates the triangle and puts it into the root
      */
-    public void render() {       
+    public void render() {
+        // search the largest cel, multiply by fontsize and use it as celwidth
+        celWidth = createData(max, (int)max/2).toString().length() * fontSize;
+        System.out.println("celWidth: " + celWidth);
+        
         for (int i = 0; i <= max; i++) {
             getChildren().add(createRow(i));
         }
@@ -51,7 +56,7 @@ public class DVP extends VBox{
     private Label createCel(int row, int column) {
         // TODO add black stroke
         Label result = new Label();
-        result.setText(Long.toString(createData(row, column)));
+        result.setText(createData(row, column).toString());
         result.setPrefSize(celWidth, celHeight);
         StringBuilder styles = new StringBuilder();
         styles.append("-fx-border-color: black;");
@@ -62,16 +67,20 @@ public class DVP extends VBox{
         
         return result;
     }
-    private long createData(int row, int column) {
-        
-        
-        return calcFaculteit(row) / (calcFaculteit(column) * calcFaculteit(row - column));
+    private BigInteger createData(int row, int column) {
+        return calcFaculteit(new BigInteger(Integer.toString(row)))
+                .divide(
+                        calcFaculteit(new BigInteger(Integer.toString(column)))
+                            .multiply(
+                                    calcFaculteit(new BigInteger(Integer.toString(row - column)))
+                            )
+                );
     }
-    private long calcFaculteit(long num) {
-        if (num <= 1) {
-            return 1;
+    private BigInteger calcFaculteit(BigInteger num) {
+        if (num.toString().equals("1") || num.toString().equals("0")) {
+            return new BigInteger("1");
         } else {
-            return calcFaculteit(num - 1) * num;
+            return calcFaculteit(num.add(new BigInteger("-1"))).multiply(num);
         }
     }
     private double calcMaxWidth() {
